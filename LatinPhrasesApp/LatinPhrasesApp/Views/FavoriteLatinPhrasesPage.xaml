@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:LatinPhrasesApp.Views"
+             x:Class="LatinPhrasesApp.Views.FavoriteLatinPhrasesPage"
+             Title="Favorites">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Favorite Latin Phrases"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,0" />
+
+            <ListView x:Name="FavoritesListView"
+                      ItemsSource="{Binding FavoriteLatinPhrases}"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding LoadFavoritesCommand}"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10" Spacing="10">
+                                <Label Text="{Binding Phrase}"
+                                       FontSize="Medium"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Translation}"
+                                       FontSize="Small"
+                                       TextColor="Gray" />
+                                <Label Text="{Binding Author.Name}"
+                                       FontSize="Small"
+                                       TextColor="Gray"
+                                       FontAttributes="Italic" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

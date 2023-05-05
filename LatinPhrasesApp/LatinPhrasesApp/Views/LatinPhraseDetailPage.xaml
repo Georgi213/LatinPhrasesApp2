@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.LatinPhraseDetailPage">
+
+    <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
+        <Grid  x:Name="PhrasesGrid" Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Text="{Binding LatinPhrase.Phrase}"
+                   FontSize="Large"
+                   FontAttributes="Bold" />
+
+            <Label Grid.Row="1"
+                   Text="{Binding LatinPhrase.Translation}"
+                   FontSize="Medium" />
+
+            <Label Grid.Row="2"
+                   Text="{Binding LatinPhrase.Author}"
+                   FontSize="Small" />
+
+            <Image Grid.Row="3"
+                   Source="{Binding Image}"
+                   HeightRequest="100" />
+
+         
+
+
+        </Grid>
+
+    </ScrollView>
+
+</ContentPage>

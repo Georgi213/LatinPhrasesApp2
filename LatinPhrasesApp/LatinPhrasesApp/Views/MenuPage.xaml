@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.MenuPage"
+             Title="Menu">
+
+        <ContentPage.Content>
+            <StackLayout>
+                <Grid BackgroundColor="{StaticResource Primary}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="2" Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="20,10,10,10" />
+                    <Label Grid.Column="1" Grid.Row="0" Text="Latin Phrases" FontSize="Large" FontAttributes="Bold" TextColor="White" Margin="0,20,20,0" />
+                    <Label Grid.Column="1" Grid.Row="1" Text="Explore &amp; Share" FontSize="Small" TextColor="White" Margin="0,0,20,10" />
+                </Grid>
+                
+                <ListView x:Name="FlyoutMenuListView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding Icon}" WidthRequest="40" HeightRequest="40" Margin="10" />
+                                    <Label Grid.Column="1" Text="{Binding Title}" FontSize="Medium" VerticalOptions="Center" Margin="10,0,0,0" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+
+            <StackLayout VerticalOptions="Start" Margin="1,-37,8,623">
+
+        <Button Text="Keele ajalugu" Clicked="OnHomeButtonClicked" />
+        <Button Text="Hääldus" Clicked="OnPronunciationButtonClicked" />
+        <Button Text="Autorite nimekiri" Clicked="OnAuthorsListButtonClicked" />
+        <Button Text="Lemmikfraasid" Clicked="OnFavoriteLatinPhrasesButtonClicked" />
+        <Button Text="Ladinakeelsete fraaside nimekirja " Clicked="OnLatinPhrasesListButtonClicked" />
+        <Button Text="Minu ladinakeelsed fraasid" Clicked="OnMyLatinPhrasesButtonClicked" />
+    </StackLayout>
+    </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

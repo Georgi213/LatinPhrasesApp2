@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.LatinPhrasesListPage"
+             Title="Latin Phrases">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="SearchBar"
+                       Placeholder="Search"
+                       SearchCommand="{Binding SearchCommand}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
+            <ListView x:Name="PhrasesListView"
+                      ItemsSource="{Binding LatinPhrases}"
+                      HasUnevenRows="True"
+                      RefreshCommand="{Binding LoadLatinPhrasesCommand}"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedLatinPhrase, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding LatinPhrase.Phrase}"
+                                       FontSize="Large"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding LatinPhrase.Translation}"
+                                       FontSize="Medium" />
+                                <Label Text="{Binding LatinPhrase.Author}"
+                                       FontSize="Small"
+                                       FontAttributes="Italic" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

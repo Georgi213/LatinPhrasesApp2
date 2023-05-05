@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.MyLatinPhrasesPage"
+             Title="My Phrases">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="SearchBar"
+                       Placeholder="Search My Phrases..."
+                       SearchCommand="{Binding SearchMyPhrasesCommand}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"/>
+
+            <ListView x:Name="MyPhrasesListView"
+                      ItemsSource="{Binding MyLatinPhrases}"
+                      HasUnevenRows="True"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      RefreshCommand="{Binding LoadMyPhrasesCommand}"
+                      SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0"
+                                       Text="{Binding Phrase}"
+                                       LineBreakMode="WordWrap"
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Row="1"
+                                       Text="{Binding Translation}"
+                                       LineBreakMode="WordWrap"
+                                       FontAttributes="Italic"
+                                       Opacity="0.6"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

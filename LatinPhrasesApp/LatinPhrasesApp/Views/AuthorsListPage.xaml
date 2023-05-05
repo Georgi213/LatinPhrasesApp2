@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.AuthorsListPage"
+             Title="Authors"
+             BackgroundColor="White">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="search_icon.png" Clicked="OnSearchClicked" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <SearchBar x:Name="AuthorSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
+                <Button Text="Search" Clicked="OnSearchClicked" Grid.Column="1" />
+            </Grid>
+            <ListView x:Name="AuthorsListView" ItemsSource="{Binding Authors}" HasUnevenRows="True" ItemTapped="OnAuthorTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Portrait}" WidthRequest="60" HeightRequest="60" Margin="5" Grid.Column="0" />
+                                <StackLayout Orientation="Vertical" Padding="10" Grid.Column="1">
+                                    <Label Text="{Binding Name}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" />
+                                    <Label Text="{Binding LegendaryQuote}" FontSize="Small" VerticalOptions="Center" FontAttributes="Italic" TextColor="Gray" />
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
