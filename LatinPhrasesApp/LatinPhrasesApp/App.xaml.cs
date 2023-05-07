@@ -1,4 +1,5 @@
 ﻿using LatinPhrasesApp.Services;
+using LatinPhrasesApp.ViewModels;
 using LatinPhrasesApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -11,12 +12,17 @@ namespace LatinPhrasesApp
     {
 
         public static IServiceProvider ServiceProvider { get; private set; }
+
+        public static FavoriteLatinPhrasesViewModel FavoriteViewModel;
+        public static LatinPhrasesListViewModel LatinPhrasesListViewModel;
         public App()
         {
             InitializeComponent();
 
             var services = new ServiceCollection();
             ConfigureServices(services);
+            FavoriteViewModel = new FavoriteLatinPhrasesViewModel();
+            LatinPhrasesListViewModel = new LatinPhrasesListViewModel(FavoriteViewModel);
 
             services.AddSingleton<IDataService, DataService>(); // Register your IDataService implementation
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LatinPhrasesApp.Behaviors;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,16 +15,26 @@ namespace LatinPhrasesApp.Views
     {
         private readonly FavoriteLatinPhrasesViewModel _viewModel;
 
-        public FavoriteLatinPhrasesPage()
+        public FavoriteLatinPhrasesPage(FavoriteLatinPhrasesViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = _viewModel = new FavoriteLatinPhrasesViewModel();
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
+        }
+        private void HeartButton_Pressed(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.TextColor = Color.DarkRed;
+            }
         }
 
-        protected override void OnAppearing()
+        private void HeartButton_Released(object sender, EventArgs e)
         {
-            base.OnAppearing();
-            _viewModel.OnAppearing();
+            if (sender is Button button)
+            {
+                button.TextColor = Color.Default;
+            }
         }
     }
 }

@@ -7,14 +7,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace LatinPhrasesApp.ViewModels
 {
     public class AuthorsListViewModel : BaseViewModel
     {
-        private readonly IDataService _dataService;
+        public ICommand AuthorSelectedCommand { get; }
         private string _searchText;
+        
 
         private ObservableCollection<Author> _authors;
 
@@ -34,11 +36,18 @@ namespace LatinPhrasesApp.ViewModels
         }
         private Author _selectedAuthor;
         private IEnumerable<Author> _allAuthors;
+
+       
+
+
         public AuthorsListViewModel()
         {
-            // Initialize the Authors property
+           
             LoadAuthors();
+            AuthorTappedCommand = new Command<Author>(OnAuthorTapped);
         }
+
+
         private void LoadAuthors()
         {
 
@@ -104,20 +113,20 @@ namespace LatinPhrasesApp.ViewModels
             get => _selectedAuthor;
             set => SetProperty(ref _selectedAuthor, value);
         }
+        private void OnAuthorTapped(Author author)
+        {
+            if (author == null)
+                return;
 
+            SelectedAuthor = null;
+        }
+
+        
         public Command LoadAuthorsCommand { get; }
         public Command SearchCommand { get; }
         public Command AuthorTappedCommand { get; }
 
-        public AuthorsListViewModel(IDataService dataService)
-        {
-            _dataService = dataService;
-            Authors = new ObservableCollection<Author>();
-
-            LoadAuthorsCommand = new Command(async () => await ExecuteLoadAuthorsCommand());
-            SearchCommand = new Command<string>(async (searchText) => await ExecuteSearchCommand(searchText));
-            AuthorTappedCommand = new Command<Author>(OnAuthorTapped);
-        }
+        
         public void FilterAuthors(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -130,61 +139,10 @@ namespace LatinPhrasesApp.ViewModels
             }
         }
 
-        private async Task ExecuteLoadAuthorsCommand()
-        {
-            IsBusy = true;
+        
 
-            try
-            {
-                var authors = await _dataService.GetAuthorsAsync();
-                Authors.Clear();
-                foreach (var author in authors)
-                {
-                    Authors.Add(author);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+        
 
-        private async Task ExecuteSearchCommand(string searchText)
-        {
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                await ExecuteLoadAuthorsCommand();
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                var authors = await _dataService.SearchAuthorsAsync(searchText);
-                Authors.Clear();
-                foreach (var author in authors)
-                {
-                    Authors.Add(author);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        private void OnAuthorTapped(Author author)
-        {
-            if (author == null)
-                return;
-
-            SelectedAuthor = null;
-        }
-
-        public async Task OnAppearing()
-        {
-            await ExecuteLoadAuthorsCommand();
-        }
+       
     }
 }

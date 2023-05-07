@@ -10,7 +10,7 @@ namespace LatinPhrasesApp.Models
         public string Name { get; set; }
         public string Portrait { get; set; }
         public string LegendaryQuote { get; set; }
-
+        public string LatinPhrase { get; set; }
         public List<string> LatinPhrases { get; set; }
         public List<string> TranslatedPhrases { get; set; }
 

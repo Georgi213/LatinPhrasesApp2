@@ -26,7 +26,7 @@
     </FlyoutPage.Flyout>
 
     <FlyoutPage.Detail>
-        <NavigationPage>
+        <NavigationPage x:Name="NavigationPageInstance">
             <x:Arguments>
                 <local:HomePage />
             </x:Arguments>
@@ -36,6 +36,7 @@
                     <On Platform="iOS" Value="navicon" />
                 </OnPlatform>
             </NavigationPage.Icon>
+           
             <NavigationPage.BarBackgroundColor>
                 <OnPlatform x:TypeArguments="Color">
                     <On Platform="Android" Value="#4A4A4A" />

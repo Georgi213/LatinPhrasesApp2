@@ -23,30 +23,39 @@ namespace LatinPhrasesApp.Views
             public AuthorsListPage()
             {
             InitializeComponent();
+            AddAboutToolbarItem();
 
             BindingContext = _viewModel = new AuthorsListViewModel();
         }
 
-            protected override void OnAppearing()
-            {
-                base.OnAppearing();
-                _viewModel.OnAppearing();
-            }
+         
 
-            private async void OnAuthorTapped(object sender, ItemTappedEventArgs e)
-            {
-                if (e.Item != null)
-                {
-                    await Navigation.PushAsync(new LatinPhrasesListPage(e.Item as Author));
-                }
-            }
+            
 
             private async void OnSearchClicked(object sender, EventArgs e)
             {
             var searchTerm = AuthorSearchBar.Text;
             _viewModel.FilterAuthors(searchTerm);
            }
-         
+        private void AddAboutToolbarItem()
+        {
+            var aboutToolbarItem = new ToolbarItem
+            {
+                Text = "About",
+                IconImageSource = "about_icon.png", // Optional, add your about icon image
+                Order = ToolbarItemOrder.Secondary, // Set the order for the action overflow menu
+                Priority = 0 // Adjust the priority as needed
+            };
+
+            aboutToolbarItem.Clicked += AboutToolbarItem_Clicked;
+            this.ToolbarItems.Add(aboutToolbarItem);
+        }
+
+        private async void AboutToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AboutPage());
+        }
+
 
     }
 }

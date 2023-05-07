@@ -6,9 +6,26 @@
              BackgroundColor="White">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="search_icon.png" Clicked="OnSearchClicked" />
+        <ToolbarItem IconImageSource="search_icon.png"  Clicked="OnSearchClicked" />
     </ContentPage.ToolbarItems>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="#4A4A4A" />
+            </Style>
+            <Style x:Key="SearchButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#4A4A4A" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="Margin" Value="0, 20, 20, 8" />
+                <Setter Property="Padding" Value="4" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="WidthRequest" Value="100" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
             <Grid>
@@ -17,9 +34,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <SearchBar x:Name="AuthorSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
-                <Button Text="Search" Clicked="OnSearchClicked" Grid.Column="1" />
+                <Button Text="Search" Clicked="OnSearchClicked" Grid.Column="1" Style="{StaticResource SearchButtonStyle}" />
             </Grid>
-            <ListView x:Name="AuthorsListView" ItemsSource="{Binding Authors}" HasUnevenRows="True" ItemTapped="OnAuthorTapped">
+            <ListView x:Name="AuthorsListView" ItemsSource="{Binding Authors}" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

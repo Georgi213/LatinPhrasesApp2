@@ -24,13 +24,31 @@ namespace LatinPhrasesApp.Views
         public LatinPhraseDetailPage(LatinPhrase latinPhraseData)
         {
             InitializeComponent();
+            AddAboutToolbarItem();
 
 
             // Bind the ViewModel to the passed LatinPhrase
             BindingContext = _viewModel = new LatinPhraseDetailViewModel(_latinPhraseData.LatinPhrases[0]);
         }
-       
-       
+        private void AddAboutToolbarItem()
+        {
+            var aboutToolbarItem = new ToolbarItem
+            {
+                Text = "About",
+                IconImageSource = "about_icon.png", // Optional, add your about icon image
+                Order = ToolbarItemOrder.Secondary, // Set the order for the action overflow menu
+                Priority = 0 // Adjust the priority as needed
+            };
+
+            aboutToolbarItem.Clicked += AboutToolbarItem_Clicked;
+            this.ToolbarItems.Add(aboutToolbarItem);
+        }
+
+        private async void AboutToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AboutPage());
+        }
+
     }
 
 }

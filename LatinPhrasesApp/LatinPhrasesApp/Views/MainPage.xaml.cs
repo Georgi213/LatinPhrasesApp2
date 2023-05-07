@@ -15,6 +15,16 @@ namespace LatinPhrasesApp.Views
         public MainPage()
         {
             InitializeComponent();
+            Flyout = new MenuPage();
+            Detail = NavigationPageInstance;
+
         }
+        private async void OnAboutClicked(object sender, EventArgs e)
+        {
+            await NavigationPageInstance.Navigation.PushAsync(new AboutPage());
+        }
+
+        
+
     }
 }

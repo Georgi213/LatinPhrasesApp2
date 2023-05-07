@@ -5,49 +5,46 @@ using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Essentials;
 
 namespace LatinPhrasesApp.ViewModels
 {
-    public class FavoriteLatinPhrasesViewModel : BaseViewModel
+    public class FavoriteLatinPhrasesViewModel : INotifyPropertyChanged
     {
-        private readonly IDataService _dataService;
-        public ObservableCollection<LatinPhrase> FavoriteLatinPhrases { get; set; }
-        public Command LoadFavoritesCommand { get; set; }
+        public ObservableCollection<Phrase> FavoritePhrases { get; set; }
+        public ICommand RemoveFavoriteCommand { get; }
+        public ICommand ShareCommand { get; }
 
-        public FavoriteLatinPhrasesViewModel(IDataService dataService = null)
+        public FavoriteLatinPhrasesViewModel()
         {
-            _dataService = dataService ?? new DataService();
-            FavoriteLatinPhrases = new ObservableCollection<LatinPhrase>();
-            LoadFavoritesCommand = new Command(async () => await LoadFavoriteLatinPhrases());
+            FavoritePhrases = new ObservableCollection<Phrase>();
+            RemoveFavoriteCommand = new Command<Phrase>(RemoveFavorite);
+            ShareCommand = new Command<Phrase>(SharePhrase);
         }
-
-        public async Task LoadFavoriteLatinPhrases()
+        private async void SharePhrase(Phrase phrase)
         {
-            IsBusy = true;
-
-            try
+            await Share.RequestAsync(new ShareTextRequest
             {
-                FavoriteLatinPhrases.Clear();
-                var favorites = await _dataService.GetFavoriteLatinPhrasesAsync();
-
-                foreach (var phrase in favorites)
-                {
-                    FavoriteLatinPhrases.Add(phrase);
-                }
-            }
-            finally
+                Text = $"{phrase.Latin} - {phrase.Estonian}",
+                Title = "Share Latin Phrase"
+            });
+        }
+        private void RemoveFavorite(Phrase phrase)
+        {
+            if (FavoritePhrases.Contains(phrase))
             {
-                IsBusy = false;
+                FavoritePhrases.Remove(phrase);
             }
         }
-
-        public void OnAppearing()
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (FavoriteLatinPhrases.Count == 0)
-            {
-                LoadFavoritesCommand.Execute(null);
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-}   }
+    }
+}

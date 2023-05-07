@@ -40,14 +40,14 @@ namespace LatinPhrasesApp.Views
 
         private async void OnFavoriteLatinPhrasesButtonClicked(object sender, EventArgs e)
         {
-            NavigateToPage(new FavoriteLatinPhrasesPage());
+            NavigateToPage(new FavoriteLatinPhrasesPage(App.FavoriteViewModel));
         }
-        
-        
+       
+
         private async void OnLatinPhrasesListButtonClicked(object sender, EventArgs e)
         {
            
-            NavigateToPage(new LatinPhrasesListPage());
+             NavigateToPage(new LatinPhrasesListPage(App.LatinPhrasesListViewModel, App.FavoriteViewModel));
         }
         private async void OnMyLatinPhrasesButtonClicked(object sender, EventArgs e)
         {

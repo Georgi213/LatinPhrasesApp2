@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.HomePage">
     <RelativeLayout>
+        
         <Image Source="papyrus1.jpg"
                Aspect="AspectFill"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
@@ -11,6 +12,8 @@
         <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
             <StackLayout Padding="30">
+
+                
                 <Label Text="Ladina keele päritolu"
                        FontSize="30"
                        FontAttributes="Bold"
@@ -70,7 +73,10 @@ Samal ajal sisaldavad kõik romaani rühma keeled oma sõnavaras ja lisaks, kuig
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
             </StackLayout>
         </ScrollView>
+        
+        
     </RelativeLayout>
 </ContentPage>

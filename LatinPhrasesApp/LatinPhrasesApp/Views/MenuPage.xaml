@@ -45,7 +45,7 @@
         <Button Text="Hääldus" Clicked="OnPronunciationButtonClicked" />
         <Button Text="Autorite nimekiri" Clicked="OnAuthorsListButtonClicked" />
         <Button Text="Lemmikfraasid" Clicked="OnFavoriteLatinPhrasesButtonClicked" />
-        <Button Text="Ladinakeelsete fraaside nimekirja " Clicked="OnLatinPhrasesListButtonClicked" />
+        <Button Text="Ladinakeelsete fraaside loend " Clicked="OnLatinPhrasesListButtonClicked" />
         <Button Text="Minu ladinakeelsed fraasid" Clicked="OnMyLatinPhrasesButtonClicked" />
     </StackLayout>
     </StackLayout>
