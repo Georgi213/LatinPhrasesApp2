@@ -26,7 +26,7 @@ namespace LatinPhrasesApp.Views
         {
             var aboutToolbarItem = new ToolbarItem
             {
-                Text = "About",
+                Text = "Umbes",
                 IconImageSource = "about_icon.png", // Optional, add your about icon image
                 Order = ToolbarItemOrder.Secondary, // Set the order for the action overflow menu
                 Priority = 0 // Adjust the priority as needed

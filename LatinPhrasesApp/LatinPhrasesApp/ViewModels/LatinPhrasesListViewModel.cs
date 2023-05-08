@@ -1,5 +1,6 @@
 ﻿using LatinPhrasesApp.Models;
 using LatinPhrasesApp.Services;
+using LatinPhrasesApp.Views;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using System;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace LatinPhrasesApp.ViewModels
 {
@@ -20,29 +22,65 @@ namespace LatinPhrasesApp.ViewModels
         
         public ICommand AddFavoriteCommand { get; set; }
         private FavoriteLatinPhrasesViewModel _favoriteViewModel;
-        private IEnumerable<Phrase> _allPhrases;
+        private IEnumerable<LatinPhrase> _allPhrases;
         public ICommand ShareCommand { get; }
         private string _searchText;
-
-        private ObservableCollection<Phrase> _phrases;
+        public ICommand CopyPhraseCommand { get; }
+        private ObservableCollection<LatinPhrase> _phrases;
+        private LatinPhrasesListViewModel _viewModel;
         public string SelectedLatinPhrase { get; set; }
 
-        public ObservableCollection<Phrase> Phrases
+        public ObservableCollection<LatinPhrase> Phrases
         {
             get => _phrases;
             set => SetProperty(ref _phrases, value);
+        }
+        private void FilterPhrasesByLegendaryQuote(string legendaryQuote)
+        {
+            if (!string.IsNullOrEmpty(legendaryQuote))
+            {
+                var filteredPhrases = _allPhrases.Where(p => p.Latin == legendaryQuote);
+                Phrases = new ObservableCollection<LatinPhrase>(filteredPhrases);
+            }
+            else
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
+            }
+        }
+        public async Task NavigateToLatinPhrasesListPage(LatinPhrase author)
+        {
+            var latinPhrasesListViewModel = new LatinPhrasesListViewModel(_favoriteViewModel, author.Latin);
+            var latinPhrasesListPage = new LatinPhrasesListPage(latinPhrasesListViewModel, _favoriteViewModel);
+
+            if (Application.Current.MainPage is FlyoutPage flyoutPage &&
+            flyoutPage.Detail is NavigationPage navigationPage)
+            {
+                await navigationPage.Navigation.PushAsync(latinPhrasesListPage);
+            }
+        }
+        public void CopyPhraseToClipboard(string phrase)
+        {
+            Xamarin.Essentials.Clipboard.SetTextAsync(phrase);
         }
 
         public LatinPhrasesListViewModel(FavoriteLatinPhrasesViewModel favoriteViewModel, string selectedPhrase = null)
         {
             _favoriteViewModel = favoriteViewModel;
-            AddFavoriteCommand = new Command<Phrase>(AddFavorite);
-            ShareCommand = new Command<Phrase>(SharePhrase);
+            AddFavoriteCommand = new Xamarin.Forms.Command<LatinPhrase>(AddFavorite);
+            CopyPhraseCommand = new Xamarin.Forms.Command<string>(CopyPhraseToClipboard);
+            ShareCommand = new Xamarin.Forms.Command<LatinPhrase>(SharePhrase);
+
+
 
             LoadPhrases(selectedPhrase);
 
+            MessagingCenter.Subscribe<AuthorsListViewModel, string>(this, "AuthorSelected", (sender, legendaryQuote) =>
+            {
+                FilterPhrasesByLegendaryQuote(legendaryQuote);
+            });
+
         }
-        private async void SharePhrase(Phrase phrase)
+        private async void SharePhrase(LatinPhrase phrase)
         {
             await Share.RequestAsync(new ShareTextRequest
             {
@@ -50,7 +88,7 @@ namespace LatinPhrasesApp.ViewModels
                 Title = "Share Latin Phrase"
             });
         }
-        private void AddFavorite(Phrase phrase)
+        private void AddFavorite(LatinPhrase phrase)
         {
             if (!_favoriteViewModel.FavoritePhrases.Any(p => p.Latin == phrase.Latin && p.Estonian == phrase.Estonian))
             {
@@ -60,90 +98,40 @@ namespace LatinPhrasesApp.ViewModels
         private void LoadPhrases(string selectedPhrase = null)
         {
 
-            _allPhrases = new ObservableCollection<Phrase>
-        {
-            new Phrase
+            var allPhrases = new List<LatinPhrase>
             {
-                Latin = "Carpe diem",
-                Estonian = "Võtke päev kinni"
-            },
-            new Phrase
-        {
-            Latin = "Veni, vidi, vici",
-             Estonian = "Tulin, nägin, võitsin"
-        },
-        new Phrase
-        {
-             Latin = "Alea iacta est",
-              Estonian = "Stants on heidetud"
-        },
-         new Phrase
-        {
-            Latin = "Calamitas virtutis occasio",
-             Estonian = "Katastroof on võimalus vooruseks."
-        },
-          new Phrase
-        {
-            Latin = "Dant gaudea vires",
-             Estonian = "Rõõmus annab jõudu"
-        },
-           new Phrase
-        {
-            Latin = "Fabricando fit faber",
-             Estonian = "Meister on loodud tööjõuga"
-        },
-            new Phrase
-        {
-            Latin = "Jactantius maerent, qui minus dolent",
-             Estonian = "Kurbus, mis näitab vähest kurbust"
-        },
-             new Phrase
-        {
-            Latin = "Rebus in adversis meliora sperare memento",
-             Estonian = "Ebaõnnestumises looda parimat"
-        },
-              new Phrase
-        {
-            Latin = "Tamdiu discendum est, quamdiu vivas",
-             Estonian = "Kui palju sa elad, nii palju sa õpid"
-        },
-               new Phrase
-        {
-            Latin = "Beate vivere est honeste vivere",
-             Estonian = "Elada õnnelikult tähendab elada ilusti"
-        },
-                new Phrase
-        {
-            Latin = "Ubi Concordia, Ibi Victoria",
-             Estonian = "Kus on kokkulepe, seal on võit."
-        },
-                 new Phrase
-        {
-            Latin = "Vae victoribus",
-             Estonian = "Häda võitjatele"
-        },
-                  new Phrase
-        {
-            Latin = "Laus propria sordet",
-             Estonian = "Kiitus teie kasuks on rõve"
-        },
-                   new Phrase
-        {
-            Latin = "In legibus salus",
-             Estonian = "Pääste seaduses"
-        },
-                    new Phrase
-        {
-            Latin = "Errando discimus",
-             Estonian = "Vead õpetavad"
-        },
-        };
+                 new LatinPhrase { Latin = "Carpe diem", Estonian = "Haara päevast" },
+                 new LatinPhrase { Latin = "Veni, vidi, vici", Estonian = "Tulin, nägin, võitsin" },
+                 new LatinPhrase { Latin = "Alea iacta est", Estonian = "Täring on veeretatud" },
+                 new LatinPhrase { Latin = "Calamitas virtutis occasio", Estonian = "Katastroof on võimalus vooruseks." },
+                 new LatinPhrase { Latin = "Dant gaudea vires", Estonian = "Rõõmus annab jõudu" },
+                 new LatinPhrase { Latin = "Fabricando fit faber", Estonian = "Meister on loodud tööjõuga" },
+                 new LatinPhrase { Latin = "Jactantius maerent, qui minus dolent", Estonian = "Kurbus, mis näitab vähest kurbust" },
+                 new LatinPhrase { Latin = "Rebus in adversis meliora sperare memento", Estonian = "Ebaõnnestumises looda parimat" },
+                 new LatinPhrase { Latin = "Tamdiu discendum est, quamdiu vivas", Estonian = "Kui palju sa elad, nii palju sa õpid" },
+                 new LatinPhrase { Latin = "Beate vivere est honeste vivere", Estonian = "Elada õnnelikult tähendab elada ilusti" },
+                 new LatinPhrase { Latin = "Ubi Concordia, Ibi Victoria", Estonian = "Kus on kokkulepe, seal on võit." },
+                 new LatinPhrase { Latin = "Vae victoribus", Estonian = "Häda võitjatele" },
+                 new LatinPhrase { Latin = "Laus propria sordet", Estonian = "Kiitus teie kasuks on rõve" },
+                 new LatinPhrase { Latin = "Tempus edax rerum", Estonian = "Aja õgimine" },
+                 new LatinPhrase { Latin = "In legibus salus", Estonian = "Pääste seaduses" },
+                 new LatinPhrase { Latin = "Errando discimus", Estonian = "Vead õpetavad" },
+            };
 
+            if (!string.IsNullOrEmpty(selectedPhrase))
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(allPhrases.Where(p => p.Latin == selectedPhrase));
+            }
+            else
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(allPhrases);
+            }
 
-            Phrases = new ObservableCollection<Phrase>(_allPhrases);
+          
 
             OnPropertyChanged(nameof(Phrases));
         }
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -154,13 +142,13 @@ namespace LatinPhrasesApp.ViewModels
         {
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                Phrases = new ObservableCollection<Phrase>(_allPhrases);
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             }
             else
             {
                 searchText = searchText.ToLowerInvariant();
                 var filteredPhrases = _allPhrases.Where(a => a.Latin.ToLowerInvariant().Contains(searchText));
-                Phrases = new ObservableCollection<Phrase>(filteredPhrases);
+                Phrases = new ObservableCollection<LatinPhrase>(filteredPhrases);
             }
         }
 
@@ -168,11 +156,11 @@ namespace LatinPhrasesApp.ViewModels
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                Phrases = new ObservableCollection<Phrase>(_allPhrases);
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             }
             else
             {
-                Phrases = new ObservableCollection<Phrase>(_allPhrases.Where(phrase => phrase.Latin.ToLower().Contains(searchTerm.ToLower())));
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases.Where(phrase => phrase.Latin.ToLower().Contains(searchTerm.ToLower())));
             }
         }
 

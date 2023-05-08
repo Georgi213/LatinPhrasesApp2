@@ -1,5 +1,6 @@
 ﻿using LatinPhrasesApp.Models;
 using LatinPhrasesApp.Services;
+using LatinPhrasesApp.Views;
 using MvvmHelpers;
 using System;
 using System.Collections.Generic;
@@ -7,20 +8,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace LatinPhrasesApp.ViewModels
 {
     public class AuthorsListViewModel : BaseViewModel
     {
-        public ICommand AuthorSelectedCommand { get; }
-        private string _searchText;
         
+        private string _searchText;
+        private FavoriteLatinPhrasesViewModel _favoriteViewModel;
 
-        private ObservableCollection<Author> _authors;
+        private ObservableCollection<LatinPhrase> _authors;
 
-        public ObservableCollection<Author> Authors
+        public ObservableCollection<LatinPhrase> Authors
         {
             get => _authors;
             set => SetProperty(ref _authors, value);
@@ -34,94 +34,92 @@ namespace LatinPhrasesApp.ViewModels
                 SearchAuthors(value);
             }
         }
-        private Author _selectedAuthor;
-        private IEnumerable<Author> _allAuthors;
-
-       
-
-
+        private LatinPhrase _selectedAuthor;
+        private IEnumerable<LatinPhrase> _allAuthors;
         public AuthorsListViewModel()
         {
-           
+            // Initialize the Authors property
+            
             LoadAuthors();
-            AuthorTappedCommand = new Command<Author>(OnAuthorTapped);
+            _favoriteViewModel = new FavoriteLatinPhrasesViewModel();
         }
-
-
         private void LoadAuthors()
         {
 
-            _allAuthors = new ObservableCollection<Author>
+            _allAuthors = new ObservableCollection<LatinPhrase>
         {
-            new Author
+            new LatinPhrase
             {
                 Name = "Horace",
                 Portrait = "horace_portrait.jpg",
-                LegendaryQuote = "Carpe diem"
+                Latin = "Carpe diem"
             },
-            new Author
+            new LatinPhrase
         {
             Name = "Julius Caesar",
             Portrait = "julius_caesar_portrait.jpg",
-            LegendaryQuote = "Veni, vidi, vici"
+            Latin = "Veni, vidi, vici"
         },
-        new Author
+        new LatinPhrase
         {
             Name = "Virgil",
             Portrait = "virgil_portrait.jpg",
-            LegendaryQuote = "Audentes fortuna iuvat"
+            Latin = "Audentes fortuna iuvat"
         },
-        new Author
+        new LatinPhrase
         {
             Name = "Ovid",
             Portrait = "ovid_portrait.jpg",
-            LegendaryQuote = "Tempus edax rerum"
+             Latin = "Tempus edax rerum"
         },
-        new Author
+        new LatinPhrase
         {
             Name = "Seneca",
             Portrait = "seneca_portrait.jpg",
-            LegendaryQuote = "Errare humanum est, perseverare diabolicum"
+             Latin = "Errare humanum est, perseverare diabolicum"
         },
-        new Author
+        new LatinPhrase
         {
             Name = "Cicero",
             Portrait = "cicero_portrait.jpg",
-            LegendaryQuote = "Summum ius, summa iniuria"
+             Latin = "Summum ius, summa iniuria"
         }
         };
-            Authors = new ObservableCollection<Author>(_allAuthors);
+            Authors = new ObservableCollection<LatinPhrase>(_allAuthors);
 
             OnPropertyChanged(nameof(Authors));
         }
+        public async Task NavigateToLatinPhrasesListPage(LatinPhrase author)
+        {
+            var latinPhrasesListViewModel = new LatinPhrasesListViewModel(_favoriteViewModel, author.Latin);
+            var latinPhrasesListPage = new LatinPhrasesListPage(latinPhrasesListViewModel, _favoriteViewModel);
 
+            if (Application.Current.MainPage is FlyoutPage flyoutPage &&
+            flyoutPage.Detail is NavigationPage navigationPage)
+            {
+                await navigationPage.Navigation.PushAsync(latinPhrasesListPage);
+            }
+        }
+       
         public void SearchAuthors(string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                Authors = new ObservableCollection<Author>(_allAuthors);
+                Authors = new ObservableCollection<LatinPhrase>(_allAuthors);
             }
             else
             {
                 searchText = searchText.ToLowerInvariant();
                 var filteredAuthors = _allAuthors.Where(a => a.Name.ToLowerInvariant().Contains(searchText));
-                Authors = new ObservableCollection<Author>(filteredAuthors);
+                Authors = new ObservableCollection<LatinPhrase>(filteredAuthors);
             }
         }
-        public Author SelectedAuthor
+        public LatinPhrase SelectedAuthor
         {
             get => _selectedAuthor;
             set => SetProperty(ref _selectedAuthor, value);
         }
-        private void OnAuthorTapped(Author author)
-        {
-            if (author == null)
-                return;
 
-            SelectedAuthor = null;
-        }
-
-        
         public Command LoadAuthorsCommand { get; }
         public Command SearchCommand { get; }
         public Command AuthorTappedCommand { get; }
@@ -131,18 +129,24 @@ namespace LatinPhrasesApp.ViewModels
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                Authors = new ObservableCollection<Author>(_allAuthors);
+                Authors = new ObservableCollection<LatinPhrase>(_allAuthors);
             }
             else
             {
-                Authors = new ObservableCollection<Author>(_allAuthors.Where(author => author.Name.ToLower().Contains(searchTerm.ToLower())));
+                Authors = new ObservableCollection<LatinPhrase>(_allAuthors.Where(author => author.Name.ToLower().Contains(searchTerm.ToLower())));
             }
         }
 
-        
-
-        
-
        
+
+        private void OnAuthorTapped(Author author)
+        {
+            if (author == null)
+                return;
+
+            SelectedAuthor = null;
+        }
+
+     
     }
 }

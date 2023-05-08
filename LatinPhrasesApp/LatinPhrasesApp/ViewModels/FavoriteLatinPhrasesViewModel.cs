@@ -16,17 +16,17 @@ namespace LatinPhrasesApp.ViewModels
 {
     public class FavoriteLatinPhrasesViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Phrase> FavoritePhrases { get; set; }
+        public ObservableCollection<LatinPhrase> FavoritePhrases { get; set; }
         public ICommand RemoveFavoriteCommand { get; }
         public ICommand ShareCommand { get; }
 
         public FavoriteLatinPhrasesViewModel()
         {
-            FavoritePhrases = new ObservableCollection<Phrase>();
-            RemoveFavoriteCommand = new Command<Phrase>(RemoveFavorite);
-            ShareCommand = new Command<Phrase>(SharePhrase);
+            FavoritePhrases = new ObservableCollection<LatinPhrase>();
+            RemoveFavoriteCommand = new Command<LatinPhrase>(RemoveFavorite);
+            ShareCommand = new Command<LatinPhrase>(SharePhrase);
         }
-        private async void SharePhrase(Phrase phrase)
+        private async void SharePhrase(LatinPhrase phrase)
         {
             await Share.RequestAsync(new ShareTextRequest
             {
@@ -34,13 +34,14 @@ namespace LatinPhrasesApp.ViewModels
                 Title = "Share Latin Phrase"
             });
         }
-        private void RemoveFavorite(Phrase phrase)
+        private void RemoveFavorite(LatinPhrase phrase)
         {
             if (FavoritePhrases.Contains(phrase))
             {
                 FavoritePhrases.Remove(phrase);
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

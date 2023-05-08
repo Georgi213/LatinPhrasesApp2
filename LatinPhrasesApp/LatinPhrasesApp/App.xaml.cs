@@ -23,7 +23,7 @@ namespace LatinPhrasesApp
             ConfigureServices(services);
             FavoriteViewModel = new FavoriteLatinPhrasesViewModel();
             LatinPhrasesListViewModel = new LatinPhrasesListViewModel(FavoriteViewModel);
-
+         
             services.AddSingleton<IDataService, DataService>(); // Register your IDataService implementation
 
             ServiceProvider = services.BuildServiceProvider();

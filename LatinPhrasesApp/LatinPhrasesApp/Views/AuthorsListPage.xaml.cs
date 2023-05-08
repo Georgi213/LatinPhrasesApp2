@@ -19,8 +19,8 @@ namespace LatinPhrasesApp.Views
     {
         
             private AuthorsListViewModel _viewModel;
-
-            public AuthorsListPage()
+        private FavoriteLatinPhrasesViewModel _favoriteViewModel;
+        public AuthorsListPage()
             {
             InitializeComponent();
             AddAboutToolbarItem();
@@ -37,11 +37,29 @@ namespace LatinPhrasesApp.Views
             var searchTerm = AuthorSearchBar.Text;
             _viewModel.FilterAuthors(searchTerm);
            }
+
+        private async void OnAuthorSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is LatinPhrase author)
+            {
+                await _viewModel.NavigateToLatinPhrasesListPage(author);
+            }
+
+          
+            AuthorsListView.SelectedItem = null;
+        }
+        public async Task NavigateToLatinPhrasesListPage(LatinPhrase author)
+        {
+            var latinPhrasesListViewModel = new LatinPhrasesListViewModel(_favoriteViewModel, author.Latin);
+            var latinPhrasesListPage = new LatinPhrasesListPage(latinPhrasesListViewModel, _favoriteViewModel);
+
+            
+        }
         private void AddAboutToolbarItem()
         {
             var aboutToolbarItem = new ToolbarItem
             {
-                Text = "About",
+                Text = "Umbes",
                 IconImageSource = "about_icon.png", // Optional, add your about icon image
                 Order = ToolbarItemOrder.Secondary, // Set the order for the action overflow menu
                 Priority = 0 // Adjust the priority as needed

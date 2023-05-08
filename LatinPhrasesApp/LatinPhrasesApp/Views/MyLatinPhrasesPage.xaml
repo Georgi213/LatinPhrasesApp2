@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.MyLatinPhrasesPage"
-             Title="My Phrases"
+             Title="Minu fraasid"
              BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout>
             <SearchBar x:Name="SearchBar"
-                       Placeholder="Search My Phrases..."
+                       Placeholder="Otsi Minu fraase..."
                        SearchCommand="{Binding SearchMyPhrasesCommand}"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"/>
 

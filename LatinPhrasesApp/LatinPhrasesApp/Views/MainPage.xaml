@@ -3,8 +3,9 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:views="clr-namespace:LatinPhrasesApp.Views"
             xmlns:local="clr-namespace:LatinPhrasesApp.Views"
+            
             x:Class="LatinPhrasesApp.Views.MainPage">
-
+  
     <FlyoutPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
@@ -26,6 +27,7 @@
     </FlyoutPage.Flyout>
 
     <FlyoutPage.Detail>
+        
         <NavigationPage x:Name="NavigationPageInstance">
             <x:Arguments>
                 <local:HomePage />

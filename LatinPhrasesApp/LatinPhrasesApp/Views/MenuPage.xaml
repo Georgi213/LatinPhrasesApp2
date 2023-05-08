@@ -16,8 +16,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2" Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="20,10,10,10" />
-                    <Label Grid.Column="1" Grid.Row="0" Text="Latin Phrases" FontSize="Large" FontAttributes="Bold" TextColor="White" Margin="0,20,20,0" />
-                    <Label Grid.Column="1" Grid.Row="1" Text="Explore &amp; Share" FontSize="Small" TextColor="White" Margin="0,0,20,10" />
+                <Label Grid.Column="1" Grid.Row="0" Text="Ladinakeelsed fraasid" FontSize="Large" FontAttributes="Bold" TextColor="White" Margin="0,20,20,0" />
+                <Label Grid.Column="1" Grid.Row="1" Text="Uurige &amp; Jagage" FontSize="Small" TextColor="White" Margin="0,0,20,10" />
                 </Grid>
                 
                 <ListView x:Name="FlyoutMenuListView">

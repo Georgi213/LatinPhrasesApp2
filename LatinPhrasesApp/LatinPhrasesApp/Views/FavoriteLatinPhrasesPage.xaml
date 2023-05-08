@@ -5,7 +5,7 @@
              xmlns:behaviors="clr-namespace:LatinPhrasesApp.Behaviors"
              x:Class="LatinPhrasesApp.Views.FavoriteLatinPhrasesPage"
               xmlns:local="clr-namespace:LatinPhrasesApp"
-             Title="Favorites"
+             Title="Lemmikud"
               x:Name="ThisPage"
              BackgroundColor="White"           >
 
@@ -14,7 +14,7 @@
         <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
             <StackLayout>
-            <Label Text="Favorite Latin Phrases"
+                <Label Text="Lemmik ladinakeelsed fraasid"
                    FontSize="Large"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"

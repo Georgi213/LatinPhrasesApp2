@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.AuthorsListPage"
-             Title="Authors"
+             Title="Autorid"
              BackgroundColor="White">
 
     <ContentPage.ToolbarItems>
@@ -33,10 +33,11 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <SearchBar x:Name="AuthorSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
-                <Button Text="Search" Clicked="OnSearchClicked" Grid.Column="1" Style="{StaticResource SearchButtonStyle}" />
+                <SearchBar x:Name="AuthorSearchBar" Placeholder="Otsi autoreid" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
+                <Button Text="Otsing" Clicked="OnSearchClicked" Grid.Column="1" Style="{StaticResource SearchButtonStyle}" />
             </Grid>
-            <ListView x:Name="AuthorsListView" ItemsSource="{Binding Authors}" HasUnevenRows="True">
+            <ListView x:Name="AuthorsListView" ItemsSource="{Binding Authors}"   ItemSelected="OnAuthorSelected" HasUnevenRows="True">
+                
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -48,8 +49,9 @@
                                 <Image Source="{Binding Portrait}" WidthRequest="60" HeightRequest="60" Margin="5" Grid.Column="0" />
                                 <StackLayout Orientation="Vertical" Padding="10" Grid.Column="1">
                                     <Label Text="{Binding Name}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" />
-                                    <Label Text="{Binding LegendaryQuote}" FontSize="Small" VerticalOptions="Center" FontAttributes="Italic" TextColor="Gray" />
+                                    <Label Text="{Binding Latin}" FontSize="Small" VerticalOptions="Center" FontAttributes="Italic" TextColor="Gray" />
                                 </StackLayout>
+                                
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

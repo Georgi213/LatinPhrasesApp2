@@ -20,6 +20,7 @@ namespace LatinPhrasesApp.Views
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel;
+            AddAboutToolbarItem();
         }
         private void HeartButton_Pressed(object sender, EventArgs e)
         {
@@ -35,6 +36,25 @@ namespace LatinPhrasesApp.Views
             {
                 button.TextColor = Color.Default;
             }
+        }
+
+        private void AddAboutToolbarItem()
+        {
+            var aboutToolbarItem = new ToolbarItem
+            {
+                Text = "Umbes",
+                IconImageSource = "about_icon.png", // Optional, add your about icon image
+                Order = ToolbarItemOrder.Secondary, // Set the order for the action overflow menu
+                Priority = 0 // Adjust the priority as needed
+            };
+
+            aboutToolbarItem.Clicked += AboutToolbarItem_Clicked;
+            this.ToolbarItems.Add(aboutToolbarItem);
+        }
+
+        private async void AboutToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AboutPage());
         }
     }
 }

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.LatinPhrasesListPage"
              xmlns:behaviors="clr-namespace:LatinPhrasesApp.Behaviors"
-             Title="Latin Phrases"
+             Title="Ladinakeelsed fraasid"
                xmlns:local="clr-namespace:LatinPhrasesApp"
               x:Name="ThisPage"
              BackgroundColor="White">
@@ -12,8 +12,8 @@
                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
        
         <StackLayout>
-            <SearchBar x:Name="PhraseSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" /> 
-            <ListView ItemsSource="{Binding Phrases}" HasUnevenRows="True">
+            <SearchBar x:Name="PhraseSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
+            <ListView x:Name="PhrasesListView" ItemsSource="{Binding Phrases}" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -36,10 +36,31 @@
 
 
 
-                                <StackLayout Grid.Column="1" Orientation="Vertical">
-                                        <Label Text="{Binding Latin}" FontAttributes="Bold" FontSize="15" Margin="-98,0,0,0"/>
-                                        <Label Text="{Binding Estonian}" LineBreakMode="WordWrap" WidthRequest="200" FontSize="14"  Margin="-105,0,0,0"/>
-                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" Orientation="Vertical">
+                                        <Grid>
+                                            <BoxView x:Name="ShadingBox" Opacity="0" BackgroundColor="Black" IsVisible="False" />
+                                        <StackLayout Margin="-98,0,0,0">
+                                            <Label Text="{Binding Latin}" FontAttributes="Bold" FontSize="15" HorizontalOptions="Start" VerticalOptions="Center" />
+                                            <Label Text="{Binding Estonian}" LineBreakMode="WordWrap" WidthRequest="200" FontSize="14" Margin="-7,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" />
+                                        </StackLayout>
+                                        </Grid>
+
+                                        <StackLayout.GestureRecognizers>
+                                                
+                                                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                  Command="{Binding BindingContext.CopyPhraseCommand, Source={x:Reference ThisPage}}"
+                                  CommandParameter="{Binding Latin}" 
+                                             Tapped="OnTapped" />
+                                            </StackLayout.GestureRecognizers>
+                                            
+                                            
+                                        </StackLayout>
+
+                                        
+                                    
+
+
+
                                     <ImageButton Grid.Column="2" Source="share_icon.png" Margin="45,-10,0,60"  WidthRequest="0" HeightRequest="0"  Aspect="AspectFit"  BackgroundColor="Transparent"
                                      
         Command="{Binding BindingContext.ShareCommand, Source={x:Reference Name=ThisPage}}"
