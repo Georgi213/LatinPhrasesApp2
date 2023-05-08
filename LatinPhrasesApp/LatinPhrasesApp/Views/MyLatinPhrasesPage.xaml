@@ -2,44 +2,50 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.MyLatinPhrasesPage"
-             Title="Minu fraasid"
+             Title="Minu ladinakeelsed fraasid"
+               x:Name="ThisPage"
              BackgroundColor="White">
-    <ContentPage.Content>
-        <StackLayout>
-            <SearchBar x:Name="SearchBar"
-                       Placeholder="Otsi Minu fraase..."
-                       SearchCommand="{Binding SearchMyPhrasesCommand}"
-                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"/>
 
-            <ListView x:Name="MyPhrasesListView"
-                      ItemsSource="{Binding MyLatinPhrases}"
-                      HasUnevenRows="True"
-                      IsPullToRefreshEnabled="True"
-                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                      RefreshCommand="{Binding LoadMyPhrasesCommand}"
-                      SelectionMode="None">
+    <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView x:Name="PhrasesListView"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Phrases}"
+                  HasUnevenRows="True"
+                  ItemTapped="OnItemTapped"
+                  IsPullToRefreshEnabled="True"
+                  Refreshing="OnRefreshing">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid Padding="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0"
-                                       Text="{Binding Phrase}"
-                                       LineBreakMode="WordWrap"
-                                       FontAttributes="Bold"/>
-                                <Label Grid.Row="1"
-                                       Text="{Binding Translation}"
-                                       LineBreakMode="WordWrap"
-                                       FontAttributes="Italic"
-                                       Opacity="0.6"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" Orientation="Vertical">
+                                    <Label Text="{Binding Latin}" FontAttributes="Bold" FontSize="15"/>
+                                    <Label Text="{Binding Estonian}" FontSize="14"/>
+                                </StackLayout>
+                                <Button Grid.Column="1" Text="Edit" Command="{Binding BindingContext.EditPhraseCommand, Source={x:Reference PhrasesListView}}" CommandParameter="{Binding .}"/>
+                                <Button Grid.Column="2" Text="Delete" Command="{Binding BindingContext.DeletePhraseCommand, Source={x:Reference PhrasesListView}}" CommandParameter="{Binding .}"/>
+                                <Button Grid.Column="3" Text="Add Phrase"  Command="{Binding BindingContext.AddPhraseCommand, Source={x:Reference Name=ThisPage}}"
+                    CommandParameter="{Binding .}"  />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackLayout>
-    </ContentPage.Content>
+
+            
+        </Grid>
+    </ScrollView>
+
 </ContentPage>

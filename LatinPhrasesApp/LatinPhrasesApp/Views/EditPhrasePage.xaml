@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LatinPhrasesApp.Views.EditPhrasePage">
+    <StackLayout Margin="20">
+        <Label Text="Latin" />
+        <Entry x:Name="Latin" Placeholder="Enter Latin phrase" />
+
+        <Label Text="Estonian" />
+        <Entry x:Name="Estonian" Placeholder="Enter Estonian translation" />
+
+        <Button Text="Save" Clicked="OnSaveButtonClicked" />
+    </StackLayout>
+</ContentPage>

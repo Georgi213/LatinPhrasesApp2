@@ -15,6 +15,8 @@ namespace LatinPhrasesApp
 
         public static FavoriteLatinPhrasesViewModel FavoriteViewModel;
         public static LatinPhrasesListViewModel LatinPhrasesListViewModel;
+        public static MyLatinPhrasesViewModel MyLatinPhrasesViewModel;
+
         public App()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace LatinPhrasesApp
             ConfigureServices(services);
             FavoriteViewModel = new FavoriteLatinPhrasesViewModel();
             LatinPhrasesListViewModel = new LatinPhrasesListViewModel(FavoriteViewModel);
-         
+            MyLatinPhrasesViewModel = new MyLatinPhrasesViewModel();
             services.AddSingleton<IDataService, DataService>(); // Register your IDataService implementation
 
             ServiceProvider = services.BuildServiceProvider();

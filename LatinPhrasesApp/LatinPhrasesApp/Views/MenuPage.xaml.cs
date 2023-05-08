@@ -51,7 +51,7 @@ namespace LatinPhrasesApp.Views
         }
         private async void OnMyLatinPhrasesButtonClicked(object sender, EventArgs e)
         {
-            NavigateToPage(new MyLatinPhrasesPage());
+            NavigateToPage(new MyLatinPhrasesPage(App.MyLatinPhrasesViewModel));
         }
 
 
