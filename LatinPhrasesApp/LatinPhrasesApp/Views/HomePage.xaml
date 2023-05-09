@@ -2,22 +2,24 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.HomePage">
-    <RelativeLayout>
-        
-        <Image Source="papyrus1.jpg"
-               Aspect="AspectFill"
-               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
-               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}" />
+    <Grid >
 
-        <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
-                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
-            <StackLayout Padding="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+        <Image x:Name="PapyrusImage" Source="papyrus1.jpg" Aspect="AspectFill" />
+
+        <ScrollView Grid.Row="0">
+          
+            <StackLayout Padding="30" >
 
                 
                 <Label Text="Ladina keele päritolu"
                        FontSize="30"
                        FontAttributes="Bold"
                        TextColor="Black"
+                       Opacity="0.8"
                        HorizontalOptions="Start"
                        Margin="0,30,0,0"/>
 
@@ -30,12 +32,14 @@ Ladina keel jäi paljudeks sajanditeks teaduse ja diplomaatia, koolide ja kiriku
 Ladina keel jääb endiselt teadusliku ja tehnilise terminoloogia hariduse allikaks."
                        FontSize="15"
                        TextColor="#5F4227"
+                         Opacity="0.8"
                        HorizontalOptions="Start" />
                 <Label Text="Ladina keele lühiajalugu ja selle roll maailmakultuuri arengus"
                        FontSize="30"
                        FontAttributes="Bold"
+                       Opacity="0.8"
                        TextColor="Black"
-                       HorizontalOptions="FillAndExpand"
+                       HorizontalOptions="Fill"
                        Margin="0,30,0,0"/>
 
                 <Label Text="Ladina keel (Lingua Latina) on indoeuroopa perekonna keel. Oma nime sai see latiinlaste hõimu järgi, kes sajandi alguses eKr. asustas väikest Kesk-Itaalia piirkonda – Latiumit. Aastal 753 eKr asutatud Latiumi peamine linn Rooma muudetakse pidevate sõdade tulemusena linnriigist orjaimpeeriumi pealinnaks. Ladina keel sai ametlikuks keeleks suurel alal Euroopas Vahemere kaldalt Atlandi ookeanini, samuti Põhja-Aafrikas ja osades Aasias Vahemere rannikust Kaukaasia mägede ja Eufrati jõeni.
@@ -46,13 +50,15 @@ Renessansi ajastu (renessanss) avas järgmistele põlvkondadele palju kirjandust
 Meditsiiniline haridus on võimatu ilma ladina keele põhitõdesid omandamata. Ladina keele õpe omab suurt tähtsust keskastme eriarsti koolitamisel, kuna aitab teadlikult omastada ja mõista ladina-kreeka päritolu meditsiinitermineid, millega ta kohtub ja oma praktilises tegevuses kasutab. Juba iidsetest aegadest on arstid teadnud järgmist ladina vanasõna: Invia est in medicina via sine lingua Latina – Läbimatu tee meditsiinis ilma ladina keeleta. See väide kehtib isegi meie ajal."
                        FontSize="15"
                        TextColor="#5F4227"
-                       HorizontalOptions="FillAndExpand" />
+                       Opacity="0.8"
+                       HorizontalOptions="Fill" />
 
                 <Label Text="Mõju teistele keeltele"
                        FontSize="30"
                        FontAttributes="Bold"
                        TextColor="Black"
-                       HorizontalOptions="FillAndExpand"
+                       Opacity="0.8"
+                       HorizontalOptions="Fill"
                        Margin="0,30,0,0"/>
 
                 <Label Text="Ladina keel kõnekeelsel kujul ehk vulgaarladina keel sai aluseks vastloodud rahvuskeeltele, mis ühendati romaani keeli ühendava nimetuse alla. Nende keelte hulka kuulub itaalia keel, mis tekkis Apenniini poolsaare ruumis ladina keele ümberkujundamise protsesside tulemusena, endises Gallia territooriumil arenenud prantsuse keel, portugali ja hispaania keel moodustuvad territooriumil. Pürenee poolsaar, rumeenia - Rooma Dacia (praegu Rumeenia) piirkonna ruumis, moldaavia ja ka mõned teised, millest sardiinia keel väärib erilist tähelepanu, kuna on teistest tuntud romaani keeltest kõige lähedasem õigeusu ladina keelele.
@@ -62,7 +68,8 @@ Selle rühma keelte sarnase päritoluga on tänapäeval nende vahel palju olulis
 Samal ajal sisaldavad kõik romaani rühma keeled oma sõnavaras ja lisaks, kuigi vähesel määral, morfoloogias ladina keele tunnuseid. Näiteks prantsuse keele verbaalne süsteem esindab vulgaarladina keeles juba välja toodud verbivormide edasist arengut. Prantsuse kirjakeele kujunemisel mõjutas seda oluliselt ladina keele süntaks, mille mõjul kujunesid prantsuse keele kokkuleppereeglid, aga ka infinitiivipöörded ja isoleeritud osalusvormid."
                        FontSize="15"
                        TextColor="#5F4227"
-                       HorizontalOptions="FillAndExpand" />
+                       Opacity="0.8"
+                       HorizontalOptions="Fill" />
 
                 <ListView x:Name="latinPhrasesListView"
                           Margin="0,15,0,0">
@@ -78,5 +85,5 @@ Samal ajal sisaldavad kõik romaani rühma keeled oma sõnavaras ja lisaks, kuig
         </ScrollView>
         
         
-    </RelativeLayout>
+    </Grid>
 </ContentPage>

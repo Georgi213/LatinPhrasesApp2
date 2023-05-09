@@ -8,44 +8,79 @@
 
     <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+      
+            <StackLayout>
+            <SearchBar x:Name="PhraseSearchBar" Placeholder="Minu fraaside otsing" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}"/>
             <ListView x:Name="PhrasesListView"
-                  Grid.Row="0"
                   ItemsSource="{Binding Phrases}"
                   HasUnevenRows="True"
                   ItemTapped="OnItemTapped"
                   IsPullToRefreshEnabled="True"
                   Refreshing="OnRefreshing">
+                
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" Orientation="Vertical">
-                                    <Label Text="{Binding Latin}" FontAttributes="Bold" FontSize="15"/>
-                                    <Label Text="{Binding Estonian}" FontSize="14"/>
-                                </StackLayout>
-                                <Button Grid.Column="1" Text="Edit" Command="{Binding BindingContext.EditPhraseCommand, Source={x:Reference PhrasesListView}}" CommandParameter="{Binding .}"/>
-                                <Button Grid.Column="2" Text="Delete" Command="{Binding BindingContext.DeletePhraseCommand, Source={x:Reference PhrasesListView}}" CommandParameter="{Binding .}"/>
-                                <Button Grid.Column="3" Text="Add Phrase"  Command="{Binding BindingContext.AddPhraseCommand, Source={x:Reference Name=ThisPage}}"
-                    CommandParameter="{Binding .}"  />
+                            <Grid>
+                                <Image Source="papyrus2.jpg" Aspect="AspectFill" />
+                                <Grid Padding="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"  Padding="3"  Margin="40,0,0,0" ImageSource="add_icon" FontSize="27"  BackgroundColor="transparent"
+                    Command="{Binding BindingContext.AddPhraseCommand, Source={x:Reference Name=ThisPage}}"
+                    CommandParameter="{Binding .}"
+                                           />
+                                    <Button Grid.Column="2"  Padding="3"  Margin="-70,0,0,0" FontSize="27" BackgroundColor="transparent" ImageSource="delete_icon" Command="{Binding BindingContext.DeletePhraseCommand, Source={x:Reference PhrasesListView}}" CommandParameter="{Binding .}" HorizontalOptions="Center"/>
+                                   
+
+
+
+
+
+
+                                    <StackLayout Grid.Column="1" Orientation="Vertical">
+                                        <Grid>
+                                            <BoxView x:Name="ShadingBox" Opacity="0" BackgroundColor="Black" IsVisible="False" />
+                                            <StackLayout Margin="-28,0,0,0">
+                                                <Label Text="{Binding Latin}" FontAttributes="Bold" FontSize="15" HorizontalOptions="Start" Margin="45,0,0,0" VerticalOptions="Center" />
+                                                <Label Text="{Binding Estonian}" LineBreakMode="WordWrap" WidthRequest="200" FontSize="14" Margin="45,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" />
+                                            </StackLayout>
+                                        </Grid>
+
+                                        <StackLayout.GestureRecognizers>
+
+                                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                  Command="{Binding BindingContext.CopyPhraseCommand, Source={x:Reference ThisPage}}"
+                                  CommandParameter="{Binding Latin}" 
+                                             Tapped="OnTapped" />
+                                        </StackLayout.GestureRecognizers>
+
+
+                                    </StackLayout>
+
+
+
+
+
+
+                                    <ImageButton Grid.Column="2" Source="share_icon.png" Margin="90,-39,0, 30"  WidthRequest="0" HeightRequest="0"  Aspect="AspectFit"  BackgroundColor="Transparent"
+                                     
+        Command="{Binding BindingContext.ShareCommand, Source={x:Reference Name=ThisPage}}"
+        CommandParameter="{Binding .}" />
+                                </Grid>
                             </Grid>
+                            
+                            
+                            
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            
-        </Grid>
+            </StackLayout>
+        
+        
+        
     </ScrollView>
-
 </ContentPage>

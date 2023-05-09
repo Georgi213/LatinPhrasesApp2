@@ -2,6 +2,7 @@
 using LatinPhrasesApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,22 @@ namespace LatinPhrasesApp.Views
             this.ToolbarItems.Add(aboutToolbarItem);
         }
 
-        
+        private async void OnTapped(object sender, EventArgs e)
+        {
+            if (sender is StackLayout stackLayout && stackLayout.Parent is Grid grid)
+            {
+                var shadingBox = grid.Children.OfType<BoxView>().FirstOrDefault();
+
+                if (shadingBox != null)
+                {
+                    shadingBox.IsVisible = true;
+                    await shadingBox.FadeTo(0.3, 100);
+                    await Task.Delay(0);
+                    await shadingBox.FadeTo(0, 100);
+                    shadingBox.IsVisible = false;
+                }
+            }
+        }
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
@@ -74,13 +90,23 @@ namespace LatinPhrasesApp.Views
                 }
             }
         }
-       
+        private async void OnSearchClicked(object sender, EventArgs e)
+        {
+            var searchTerm = PhraseSearchBar.Text;
+            _viewModel.FilterPhrases(searchTerm);
+        }
         private async void OnRefreshing(object sender, EventArgs e)
         {
             await _viewModel.LoadPhrases();
             PhrasesListView.IsRefreshing = false;
         }
-        
+        private void OnSearchTextChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SearchBar.Text))
+            {
+                (BindingContext as MyLatinPhrasesViewModel).FilterPhrases((sender as SearchBar).Text);
+            }
+        }
 
     }
 }

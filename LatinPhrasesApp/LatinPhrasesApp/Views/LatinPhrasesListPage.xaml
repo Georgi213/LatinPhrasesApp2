@@ -12,7 +12,7 @@
                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}">
        
         <StackLayout>
-            <SearchBar x:Name="PhraseSearchBar" Placeholder="Search authors" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}" />
+            <SearchBar x:Name="PhraseSearchBar" Placeholder="Fraaside otsing" Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay}"/>
             <ListView x:Name="PhrasesListView" ItemsSource="{Binding Phrases}" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>

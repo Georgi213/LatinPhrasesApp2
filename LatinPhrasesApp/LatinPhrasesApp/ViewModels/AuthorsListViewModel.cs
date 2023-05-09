@@ -83,7 +83,55 @@ namespace LatinPhrasesApp.ViewModels
             Name = "Cicero",
             Portrait = "cicero_portrait.jpg",
              Latin = "Summum ius, summa iniuria"
-        }
+        },
+          new LatinPhrase
+        {
+            Name = "René Descartes",
+            Portrait = "rene_portrait.jpg",
+             Latin = "Cogito, ergo sum"
+        },
+          new LatinPhrase
+        {
+            Name = "Parmenides",
+            Portrait = "parmenides_portrait.jpg",
+             Latin = "Ex nihilo nihil fit "
+        },
+          new LatinPhrase
+        {
+            Name = "Charles Darwin",
+            Portrait = "charles_portrait.jpg",
+             Latin = "Natura non facit saltus"
+        },
+          new LatinPhrase
+        {
+            Name = "José Bonifácio de Andrada e Silva",
+            Portrait = "jose_portrait.jpg",
+             Latin = "Non ducor, duco"
+        },
+           new LatinPhrase
+        {
+            Name = "Thomas à Kempis",
+            Portrait = "thomas_portrait.jpg",
+             Latin = "Sic transit gloria mundi "
+        },
+           new LatinPhrase
+        {
+            Name = "Aristotle",
+            Portrait = "aristotle_portrait.jpg",
+             Latin = "Sine qua non"
+        },
+             new LatinPhrase
+        {
+            Name = " John Locke",
+            Portrait = "john_portrait.jpg",
+             Latin = "Tabula rasa"
+        },
+               new LatinPhrase
+        {
+            Name = "Publius Syrus",
+            Portrait = "publius_portrait.jpg",
+             Latin = "Ubi Concordia, Ibi Victoria"
+        },
         };
             Authors = new ObservableCollection<LatinPhrase>(_allAuthors);
 

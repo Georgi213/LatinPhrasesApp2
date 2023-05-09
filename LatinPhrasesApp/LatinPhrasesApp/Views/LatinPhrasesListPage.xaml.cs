@@ -39,8 +39,8 @@ namespace LatinPhrasesApp.Views
 
         private async void OnSearchClicked(object sender, EventArgs e)
         {
-            var searchTerm = PhraseSearchBar.Text;
-            _viewModel.FilterPhrases(searchTerm);
+            var searchText = PhraseSearchBar.Text;
+            _viewModel.FilterPhrases(searchText);
         }
         private void HeartButton_Pressed(object sender, EventArgs e)
         {

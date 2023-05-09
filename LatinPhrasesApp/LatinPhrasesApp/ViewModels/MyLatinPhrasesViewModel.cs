@@ -16,22 +16,33 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Command = Xamarin.Forms.Command;
+using System.Linq;
 
 namespace LatinPhrasesApp.ViewModels
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public class MyLatinPhrasesViewModel : INotifyPropertyChanged
+    public class MyLatinPhrasesViewModel : BaseViewModel
     {
-        public ObservableCollection<LatinPhrase> Phrases { get; set; }
+        public ObservableCollection<LatinPhrase> Phrases
+        {
+            get => _phrases;
+            set => SetProperty(ref _phrases, value);
+        }
         public ICommand AddPhraseCommand { get; set; }
         private IEnumerable<LatinPhrase> _allPhrases;
+        private ObservableCollection<LatinPhrase> _phrases;
+        private string _searchText;
         public ICommand EditPhraseCommand { get; set; }
+        public ICommand FilterPhrasesCommand { get; set; }
+        public ICommand CopyPhraseCommand { get; }
         private readonly MyLatinPhrasesPage _page;
+        public ICommand ShareCommand { get; }
         public ICommand DeletePhraseCommand { get; set; }
         private MyLatinPhrasesViewModel _viewModel;
         public MyLatinPhrasesViewModel()
         {
             LoadPhrases();
+            FilterPhrasesCommand = new Xamarin.Forms.Command<string>(FilterPhrases);
             AddPhraseCommand = new Command(async () =>
             {
                 var addPhrasePage = new AddPhrasePage(AddPhrase);
@@ -40,7 +51,7 @@ namespace LatinPhrasesApp.ViewModels
                 var addPhraseNavigationPage = new NavigationPage(addPhrasePage);
                 await Application.Current.MainPage.Navigation.PushModalAsync(addPhraseNavigationPage);
             });
-
+            ShareCommand = new Xamarin.Forms.Command<LatinPhrase>(SharePhrase);
             EditPhraseCommand = new Xamarin.Forms.Command<LatinPhrase>(async (phrase) => await EditPhrase(phrase));
         }
         private void SavePhrases()
@@ -48,15 +59,47 @@ namespace LatinPhrasesApp.ViewModels
             var json = JsonConvert.SerializeObject(Phrases);
             Preferences.Set("Phrases", json);
         }
-
-        private void LoadPhrasesFromStorage()
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged(nameof(SearchText));
+                    FilterPhrases(_searchText);
+                }
+            }
+        }
+        public void SearchPhrases(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
+            }
+            else
+            {
+                searchText = searchText.ToLowerInvariant();
+                var filteredPhrases = _allPhrases.Where(a => a.Latin.ToLowerInvariant().Contains(searchText));
+                Phrases = new ObservableCollection<LatinPhrase>(filteredPhrases);
+            }
+        }
+        public void CopyPhraseToClipboard(string phrase)
+        {
+            Xamarin.Essentials.Clipboard.SetTextAsync(phrase);
+        }
+        private ObservableCollection<LatinPhrase> LoadPhrasesFromStorage()
         {
             var json = Preferences.Get("Phrases", string.Empty);
             if (!string.IsNullOrEmpty(json))
             {
-                Phrases = JsonConvert.DeserializeObject<ObservableCollection<LatinPhrase>>(json);
+                return JsonConvert.DeserializeObject<ObservableCollection<LatinPhrase>>(json);
             }
+            return null;
         }
+
+
         public void UpdatePhrase(LatinPhrase phrase)
         {
             var index = Phrases.IndexOf(phrase);
@@ -77,50 +120,37 @@ namespace LatinPhrasesApp.ViewModels
                 SavePhrases();
             }
         }
-
+        public void FilterPhrases(string searchText)
+        {
+            
+                if (string.IsNullOrWhiteSpace(searchText))
+                {
+                    Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
+                }
+                else
+                {
+                    Phrases = new ObservableCollection<LatinPhrase>(
+                        _allPhrases.Where(p => p.Latin.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    );
+                }
+                OnPropertyChanged(nameof(Phrases));
+            
+           
+        }
         public async Task LoadPhrases()
         {
-            LoadPhrasesFromStorage();
-
-            if (Phrases == null || Phrases.Count == 0)
+            _allPhrases = LoadPhrasesFromStorage();
+            if (_allPhrases == null || _allPhrases.Count() == 0)
             {
                 _allPhrases = new ObservableCollection<LatinPhrase>
         {
-            new LatinPhrase
-            {
-                Latin = "Carpe diem",
-                Estonian = "Haara päevast"
-            },
-            new LatinPhrase
-            {
-                Latin = "Veni, vidi, vici",
-                Estonian = "Tulin, nägin, võitsin"
-            },
-            new LatinPhrase
-            {
-                Latin = "Alea iacta est",
-                Estonian = "Täring on veeretatud"
-            },
-            new LatinPhrase
-            {
-                Latin = "Calamitas virtutis occasio",
-                Estonian = "Katastroof on võimalus vooruseks."
-            },
-            new LatinPhrase
-            {
-                Latin = "Dant gaudea vires",
-                Estonian = "Rõõmus annab jõudu"
-            },
-            new LatinPhrase
-            {
-                Latin = "Fabricando fit faber",
-                Estonian = "Meister on loodud tööjõuga"
-            }
+            new LatinPhrase { Latin = "Carpe diem", Estonian = "Haara päevast" },
+            new LatinPhrase { Latin = "Veni, vidi, vici", Estonian = "Tulin, nägin, võitsin" },
+            //... (Add other phrases here)
         };
-
-                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             }
 
+            Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             OnPropertyChanged(nameof(Phrases));
         }
         public void AddPhrase(LatinPhrase newPhrase)
@@ -129,7 +159,14 @@ namespace LatinPhrasesApp.ViewModels
                 Phrases.Add(newPhrase);
                 SavePhrases();
         }
-
+        private async void SharePhrase(LatinPhrase phrase)
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Text = $"{phrase.Latin} - {phrase.Estonian}",
+                Title = "Share Latin Phrase"
+            });
+        }
 
         public async Task EditPhrase(LatinPhrase phrase)
         {

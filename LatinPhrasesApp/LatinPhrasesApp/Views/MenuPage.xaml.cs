@@ -53,7 +53,10 @@ namespace LatinPhrasesApp.Views
         {
             NavigateToPage(new MyLatinPhrasesPage(App.MyLatinPhrasesViewModel));
         }
-
+        private async void OnLetterLatinPhrasesButtonClicked(object sender, EventArgs e)
+        {
+            NavigateToPage(new LettersPage());
+        }
 
         private void NavigateToPage(ContentPage page)
         {

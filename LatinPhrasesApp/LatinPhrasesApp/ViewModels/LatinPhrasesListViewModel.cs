@@ -22,7 +22,7 @@ namespace LatinPhrasesApp.ViewModels
         
         public ICommand AddFavoriteCommand { get; set; }
         private FavoriteLatinPhrasesViewModel _favoriteViewModel;
-        private IEnumerable<LatinPhrase> _allPhrases;
+        private ObservableCollection<LatinPhrase> _allPhrases;
         public ICommand ShareCommand { get; }
         private string _searchText;
         public ICommand CopyPhraseCommand { get; }
@@ -97,37 +97,38 @@ namespace LatinPhrasesApp.ViewModels
         }
         private void LoadPhrases(string selectedPhrase = null)
         {
-
-            var allPhrases = new List<LatinPhrase>
-            {
-                 new LatinPhrase { Latin = "Carpe diem", Estonian = "Haara päevast" },
-                 new LatinPhrase { Latin = "Veni, vidi, vici", Estonian = "Tulin, nägin, võitsin" },
+           
+            _allPhrases = new ObservableCollection<LatinPhrase>
+        {
+            new LatinPhrase { Latin = "Carpe diem",     Estonian = "Haara päevast"},
+             new LatinPhrase { Latin = "Veni, vidi, vici", Estonian = "Tulin, nägin, võitsin" },
                  new LatinPhrase { Latin = "Alea iacta est", Estonian = "Täring on veeretatud" },
                  new LatinPhrase { Latin = "Calamitas virtutis occasio", Estonian = "Katastroof on võimalus vooruseks." },
                  new LatinPhrase { Latin = "Dant gaudea vires", Estonian = "Rõõmus annab jõudu" },
                  new LatinPhrase { Latin = "Fabricando fit faber", Estonian = "Meister on loodud tööjõuga" },
-                 new LatinPhrase { Latin = "Jactantius maerent, qui minus dolent", Estonian = "Kurbus, mis näitab vähest kurbust" },
-                 new LatinPhrase { Latin = "Rebus in adversis meliora sperare memento", Estonian = "Ebaõnnestumises looda parimat" },
+              new LatinPhrase { Latin = "Jactantius maerent, qui minus dolent", Estonian = "Kurbus, mis näitab vähest kurbust" },
+               new LatinPhrase { Latin = "Rebus in adversis meliora sperare memento", Estonian = "Ebaõnnestumises looda parimat" },
                  new LatinPhrase { Latin = "Tamdiu discendum est, quamdiu vivas", Estonian = "Kui palju sa elad, nii palju sa õpid" },
                  new LatinPhrase { Latin = "Beate vivere est honeste vivere", Estonian = "Elada õnnelikult tähendab elada ilusti" },
                  new LatinPhrase { Latin = "Ubi Concordia, Ibi Victoria", Estonian = "Kus on kokkulepe, seal on võit." },
                  new LatinPhrase { Latin = "Vae victoribus", Estonian = "Häda võitjatele" },
+                  new LatinPhrase { Latin = "Sine qua non", Estonian = "Ilma milleta mitte" },
                  new LatinPhrase { Latin = "Laus propria sordet", Estonian = "Kiitus teie kasuks on rõve" },
                  new LatinPhrase { Latin = "Tempus edax rerum", Estonian = "Aja õgimine" },
                  new LatinPhrase { Latin = "In legibus salus", Estonian = "Pääste seaduses" },
                  new LatinPhrase { Latin = "Errando discimus", Estonian = "Vead õpetavad" },
-            };
-
+        };
+            
             if (!string.IsNullOrEmpty(selectedPhrase))
             {
-                Phrases = new ObservableCollection<LatinPhrase>(allPhrases.Where(p => p.Latin == selectedPhrase));
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases.Where(p => p.Latin == selectedPhrase));
             }
             else
             {
-                Phrases = new ObservableCollection<LatinPhrase>(allPhrases);
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             }
 
-          
+
 
             OnPropertyChanged(nameof(Phrases));
         }
@@ -152,15 +153,15 @@ namespace LatinPhrasesApp.ViewModels
             }
         }
 
-        public void FilterPhrases(string searchTerm)
+        public void FilterPhrases(string searchText)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            if (string.IsNullOrWhiteSpace(searchText))
             {
                 Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
             }
             else
             {
-                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases.Where(phrase => phrase.Latin.ToLower().Contains(searchTerm.ToLower())));
+                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases.Where(phrase => phrase.Latin.ToLower().Contains(searchText.ToLower())));
             }
         }
 
