@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.AddPhrasePage">
     <StackLayout Margin="20">
-        <Label Text="Latin" />
-        <Entry x:Name="Latin" Placeholder="Enter Latin phrase" />
+        <Label Text="Ladina" />
+        <Entry x:Name="Latin" Placeholder="Sisesta ladina fraas" />
 
-        <Label Text="Estonian" />
-        <Entry x:Name="Estonian" Placeholder="Enter Estonian translation" />
+        <Label Text="Eesti" />
+        <Entry x:Name="Estonian" Placeholder="Sisesta eesti keelne tõlge" />
 
-        <Button Text="Save" Clicked="OnSaveButtonClicked" />
+        <Button Text="Salvesta" Clicked="OnSaveButtonClicked" />
     </StackLayout>
 </ContentPage>

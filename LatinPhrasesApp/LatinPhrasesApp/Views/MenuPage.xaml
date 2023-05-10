@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LatinPhrasesApp.Views.MenuPage"
              Title="Menu">
-
-        <ContentPage.Content>
-        <StackLayout BackgroundColor="DarkGray">
+ 
+    <ContentPage.Content>
+           
+                <StackLayout BackgroundColor="DarkGray">
             <Grid BackgroundColor="DarkGreen"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -38,8 +39,8 @@
                 </ListView>
 
 
-
-            <StackLayout VerticalOptions="Start" Margin="1,-37,8,623" >
+            <ScrollView>
+                <StackLayout VerticalOptions="Start" Margin="1,2,8,109555" >
 
                 <Button Text="Keele ajalugu" Clicked="OnHomeButtonClicked"  BackgroundColor="DarkSlateGray"/>
                 <Button Text="Hääldus" Clicked="OnPronunciationButtonClicked" BackgroundColor="DarkSlateGray"/>
@@ -47,8 +48,11 @@
                 <Button Text="Lemmikfraasid" Clicked="OnFavoriteLatinPhrasesButtonClicked" BackgroundColor="DarkSlateGray"/>
                 <Button Text="Ladinakeelsete fraaside loend " Clicked="OnLatinPhrasesListButtonClicked" BackgroundColor="DarkSlateGray" />
                 <Button Text="Minu ladinakeelsed fraasid" Clicked="OnMyLatinPhrasesButtonClicked" BackgroundColor="DarkSlateGray"/>
+                <Button Text="Minu ladinakeelsed autorid" Clicked="OnMyAuthorsButtonClicked" BackgroundColor="DarkSlateGray"/>
                 <Button Text="Ladinakeelsed fraasid tähthaaval" Clicked="OnLetterLatinPhrasesButtonClicked" BackgroundColor="DarkSlateGray"/>
             </StackLayout>
-    </StackLayout>
+            </ScrollView>
+        </StackLayout>
+      
     </ContentPage.Content>
 </ContentPage>

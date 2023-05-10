@@ -34,6 +34,7 @@ namespace LatinPhrasesApp.Views
             // Navigate back to the previous page
             await Navigation.PopModalAsync();
         }
+       
         public AddPhrasePage(Action<LatinPhrase> addPhraseAction)
         {
             InitializeComponent();

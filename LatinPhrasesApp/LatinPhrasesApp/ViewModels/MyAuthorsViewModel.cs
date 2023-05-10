@@ -1,27 +1,24 @@
-﻿using LatinPhrasesApp.Models;
-using LatinPhrasesApp.Services;
-using LatinPhrasesApp.Views;
-using MvvmHelpers;
-using MvvmHelpers.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
+using LatinPhrasesApp.Models;
+using LatinPhrasesApp.Views;
+using MvvmHelpers;
 using Newtonsoft.Json;
-using Xamarin.Essentials;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
+using MvvmHelpers.Commands;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using Command = Xamarin.Forms.Command;
 using System.Linq;
+using Command = Xamarin.Forms.Command;
 
 namespace LatinPhrasesApp.ViewModels
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public class MyLatinPhrasesViewModel : BaseViewModel
+    public class MyAuthorsViewModel : BaseViewModel
     {
         public ObservableCollection<LatinPhrase> Phrases
         {
@@ -32,8 +29,7 @@ namespace LatinPhrasesApp.ViewModels
         private IEnumerable<LatinPhrase> _allPhrases;
         private ObservableCollection<LatinPhrase> _phrases;
         private ObservableCollection<LatinPhrase> _authors;
-
-       
+        private IEnumerable<LatinPhrase> _allAuthors;
         private string _searchText;
         public ICommand EditPhraseCommand { get; set; }
         public ICommand FilterPhrasesCommand { get; set; }
@@ -42,13 +38,13 @@ namespace LatinPhrasesApp.ViewModels
         public ICommand ShareCommand { get; }
         public ICommand DeletePhraseCommand { get; set; }
         private MyLatinPhrasesViewModel _viewModel;
-        public MyLatinPhrasesViewModel()
+        public MyAuthorsViewModel()
         {
             LoadPhrases();
-            FilterPhrasesCommand = new Xamarin.Forms.Command<string>(FilterPhrases);
+            FilterPhrasesCommand = new Xamarin.Forms.Command<string>(FilterAuthors);
             AddPhraseCommand = new Command(async () =>
             {
-                var addPhrasePage = new AddPhrasePage(AddPhrase);
+                var addPhrasePage = new AddAuthorPage(AddPhrase);
                 DeletePhraseCommand = new Xamarin.Forms.Command<LatinPhrase>(DeletePhrase);
 
                 var addPhraseNavigationPage = new NavigationPage(addPhrasePage);
@@ -71,21 +67,21 @@ namespace LatinPhrasesApp.ViewModels
                 {
                     _searchText = value;
                     OnPropertyChanged(nameof(SearchText));
-                    FilterPhrases(_searchText);
+                    FilterAuthors(_searchText);
                 }
             }
         }
-        public void SearchPhrases(string searchText)
+        public void SearchAuthors(string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
+                Phrases = new ObservableCollection<LatinPhrase>(_allAuthors);
             }
             else
             {
                 searchText = searchText.ToLowerInvariant();
-                var filteredPhrases = _allPhrases.Where(a => a.Latin.ToLowerInvariant().Contains(searchText));
-                Phrases = new ObservableCollection<LatinPhrase>(filteredPhrases);
+                var filteredAuthors = _allAuthors.Where(a => a.Name.ToLowerInvariant().Contains(searchText));
+                Phrases = new ObservableCollection<LatinPhrase>(filteredAuthors);
             }
         }
         public void CopyPhraseToClipboard(string phrase)
@@ -114,67 +110,71 @@ namespace LatinPhrasesApp.ViewModels
         }
         public async void DeletePhrase(LatinPhrase phrase)
         {
-            bool confirmDelete = await Application.Current.MainPage.DisplayAlert("Delete Phrase", "Are you sure you want to delete this phrase?", "Yes", "No");
-            
+            bool confirmDelete = await Application.Current.MainPage.DisplayAlert("Delete Author", "Are you sure you want to delete this author?", "Yes", "No");
+
             if (confirmDelete)
             {
-                
+
                 Phrases.Remove(phrase);
                 SavePhrases();
             }
         }
-        public void FilterPhrases(string searchText)
+        public void FilterAuthors(string searchTerm)
         {
-            
-                if (string.IsNullOrWhiteSpace(searchText))
-                {
-                    Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
-                }
-                else
-                {
-                    Phrases = new ObservableCollection<LatinPhrase>(
-                        _allPhrases.Where(p => p.Latin.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                    );
-                }
-                OnPropertyChanged(nameof(Phrases));
-            
-           
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(_allAuthors);
+            }
+            else
+            {
+                Phrases = new ObservableCollection<LatinPhrase>(_allAuthors.Where(author => author.Name.ToLower().Contains(searchTerm.ToLower())));
+            }
         }
         public async Task LoadPhrases()
         {
             _allPhrases = LoadPhrasesFromStorage();
-            if (_allPhrases == null || _allPhrases.Count() == 0)
+            if (_allAuthors == null || _allPhrases.Count() == 0)
             {
-                _allPhrases = new ObservableCollection<LatinPhrase>
+                _allAuthors = new ObservableCollection<LatinPhrase>
         {
-            new LatinPhrase { Latin = "Carpe diem", Estonian = "Haara päevast" },
-            new LatinPhrase { Latin = "Veni, vidi, vici", Estonian = "Tulin, nägin, võitsin" },
-            //... (Add other phrases here)
+             new LatinPhrase
+            {
+                Name = "Horace",
+                Portrait = "horace_portrait.jpg",
+                Latin = "Carpe diem"
+            },
+            new LatinPhrase
+        {
+            Name = "Julius Caesar",
+            Portrait = "julius_caesar_portrait.jpg",
+            Latin = "Veni, vidi, vici"
+        },
+
         };
             }
 
-            Phrases = new ObservableCollection<LatinPhrase>(_allPhrases);
+            Phrases = new ObservableCollection<LatinPhrase>(_allAuthors);
             OnPropertyChanged(nameof(Phrases));
         }
         public void AddPhrase(LatinPhrase newPhrase)
         {
-           
-                Phrases.Add(newPhrase);
-                SavePhrases();
+
+            Phrases.Add(newPhrase);
+            SavePhrases();
         }
         private async void SharePhrase(LatinPhrase phrase)
         {
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = $"{phrase.Latin} - {phrase.Estonian}",
-                Title = "Share Latin Phrase"
+                Text = $"{phrase.Name} - {phrase.Latin}",
+                Title = "Share Latin Author "
             });
         }
 
         public async Task EditPhrase(LatinPhrase phrase)
         {
-            var editPhrasePage = new EditPhrasePage(phrase, this);
-            await Application.Current.MainPage.Navigation.PushModalAsync(editPhrasePage);
+            var editAuthorPage = new EditAuthorPage(phrase, this);
+            await Application.Current.MainPage.Navigation.PushModalAsync(editAuthorPage);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
